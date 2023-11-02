@@ -1,0 +1,2 @@
+iQor_inbound_T insert ver 1.2.2 - test
+- trackinnum 기준으로 데이터가 정렬됨

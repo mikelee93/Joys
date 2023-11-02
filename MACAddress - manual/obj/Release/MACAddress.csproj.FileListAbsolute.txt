@@ -1,0 +1,44 @@
+C:\Users\Joy\Desktop\Mike\MACAddress\bin\Release\MACAddress.exe.config
+C:\Users\Joy\Desktop\Mike\MACAddress\bin\Release\MACAddress.exe
+C:\Users\Joy\Desktop\Mike\MACAddress\bin\Release\MACAddress.pdb
+C:\Users\Joy\Desktop\Mike\MACAddress\obj\Release\MACAddress.csproj.AssemblyReference.cache
+C:\Users\Joy\Desktop\Mike\MACAddress\obj\Release\MACAddress.Form1.resources
+C:\Users\Joy\Desktop\Mike\MACAddress\obj\Release\MACAddress.Properties.Resources.resources
+C:\Users\Joy\Desktop\Mike\MACAddress\obj\Release\MACAddress.csproj.GenerateResource.cache
+C:\Users\Joy\Desktop\Mike\MACAddress\obj\Release\MACAddress.csproj.CoreCompileInputs.cache
+C:\Users\Joy\Desktop\Mike\MACAddress\obj\Release\MACAddress.exe
+C:\Users\Joy\Desktop\Mike\MACAddress\obj\Release\MACAddress.pdb
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\MACAddress.exe.config
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\MACAddress.exe
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\MACAddress.pdb
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Data.Desktop.v23.1.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Data.v23.1.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Drawing.v23.1.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Printing.v23.1.Core.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Sparkline.v23.1.Core.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Utils.v23.1.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.XtraEditors.v23.1.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Pdf.v23.1.Core.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Pdf.v23.1.Drawing.dll
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Data.Desktop.v23.1.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Data.v23.1.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Drawing.v23.1.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Printing.v23.1.Core.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Sparkline.v23.1.Core.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Utils.v23.1.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.XtraEditors.v23.1.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Pdf.v23.1.Core.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\DevExpress.Pdf.v23.1.Drawing.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.csproj.AssemblyReference.cache
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.Form1.resources
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.Properties.Resources.resources
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.csproj.GenerateResource.cache
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.csproj.CoreCompileInputs.cache
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.csproj.CopyComplete
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.exe
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.pdb
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\MACAddress.exe.manifest
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\bin\Release\MACAddress.application
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.TrustInfo.xml
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.exe.manifest
+C:\Users\Joy\Desktop\Mike\MACAddress - manual\obj\Release\MACAddress.application

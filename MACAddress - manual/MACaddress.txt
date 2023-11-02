@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace MACAddress
+{
+    public partial class Form1 : Form
+    {
+        private string csvFilePath;
+        private string lastMAC;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+        private readonly string connectionString = @"Data Source=192.168.1.2;Database=testJoy;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
+        //private readonly string connectionString = @"Data Source=192.168.1.2;Database=JoyData;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Filter = "CSV Files|*.csv",
+                Title = "Select a CSV File",
+                InitialDirectory = @"C:\Users\Joy\Desktop\Mike\MACAddress 1" // 초기 경로 설정
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                csvFilePath = ofd.FileName;
+
+                var lines = File.ReadLines(csvFilePath).ToList();
+                if (lines.Count < 2)
+                {
+                    MessageBox.Show("CSV 파일에 충분한 데이터가 없습니다.");
+                    return;
+                }
+
+                var headers = lines[0].Split(',');
+                int columnIndex = Array.FindIndex(headers, header => header.Trim().Equals("MAC_Address"));
+
+                if (columnIndex == -1)
+                {
+                    MessageBox.Show("CSV 파일에 MAC_Address 헤더를 찾을 수 없습니다.");
+                    return;
+                }
+
+                lastMAC = lines[1].Split(',')[57].Trim();
+
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            string serialNumber = Path.GetFileNameWithoutExtension(csvFilePath).Split('_')[0];
+            string formattedMAC = lastMAC.Replace("-", ""); // '-' 제거
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                var command = new SqlCommand($"SELECT * FROM products WHERE snum = '{serialNumber}'", connection);
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Close();
+
+                    var updateCommand = new SqlCommand($"UPDATE products SET macAddress = '{formattedMAC}' WHERE snum = '{serialNumber}'", connection);
+                    updateCommand.ExecuteNonQuery();
+                }
+                else
+                {
+                    // audit이 안된 상태
+                    // 이 경우는 파일을 삭제하지 않고 다음 파일로 넘어갑니다.
+                }
+
+                connection.Close();
+            }
+        }
+        private FileInfo GetLatestFile(string directory, string filePattern)
+        {
+            var directoryInfo = new DirectoryInfo(directory);
+            return directoryInfo.GetFiles(filePattern)
+                                .OrderByDescending(f => f.LastWriteTime)
+                                .FirstOrDefault();
+        }
+    }
+}

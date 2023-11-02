@@ -1,0 +1,10 @@
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\bin\Debug\iQor_inbound_T insert.exe.config
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\bin\Debug\iQor_inbound_T insert.exe
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\bin\Debug\iQor_inbound_T insert.pdb
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\obj\Debug\iQor_inbound_T insert.csproj.AssemblyReference.cache
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\obj\Debug\iQor_inbound_T_insert.Form1.resources
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\obj\Debug\iQor_inbound_T_insert.Properties.Resources.resources
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\obj\Debug\iQor_inbound_T insert.csproj.GenerateResource.cache
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\obj\Debug\iQor_inbound_T insert.csproj.CoreCompileInputs.cache
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\obj\Debug\iQor_inbound_T insert.exe
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T insert\obj\Debug\iQor_inbound_T insert.pdb

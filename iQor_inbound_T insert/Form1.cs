@@ -1,0 +1,494 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Text;
+using System.Windows.Forms;
+
+namespace iQor_inbound_T_insert
+{
+    public partial class Form1 : Form
+    {
+        SqlConnection con;
+        public Form1()
+        {
+            InitializeComponent();
+            dateReceived.ShowCheckBox = true;
+            con = new SqlConnection(connectionString);
+            con = new SqlConnection(connectionString);
+            iQor_inbound.MultiSelect = false;
+            dateReceived.Value = DateTime.Today;
+            dateToDate.Value = DateTime.Today;
+            iQor_inbound.SelectionChanged += iQor_inbound_SelectionChanged;
+            iQor_inbound.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        //string connectionString = @"Data Source=192.168.1.2;Database=testJoy;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
+        string connectionString = @"Data Source=192.168.1.2;Database=JoyData;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
+        public int idx;
+
+        private void btnInsert_Click(object sender, EventArgs e)
+        {
+            if (IsValid())
+            {
+                string newLotNumber = GenerateNewLotNumber("joy");
+
+                DataTable dt = iQor_inbound.DataSource as DataTable;
+                if (dt == null)
+                {
+                    dt = new DataTable();
+                    dt.Columns.AddRange(new DataColumn[]
+                    {
+                new DataColumn("idx", typeof(int)),
+                new DataColumn("lotnumber", typeof(string)),
+                new DataColumn("typename", typeof(string)),
+                new DataColumn("qty", typeof(int)),
+                new DataColumn("trackingnumber", typeof(string)),
+                new DataColumn("condition", typeof(string)),
+                new DataColumn("repairable", typeof(string)),
+                new DataColumn("receivedDate", typeof(DateTime)),
+                new DataColumn("lastEntered", typeof(DateTime))
+                    });
+                    iQor_inbound.DataSource = dt;
+                }
+
+                DataRow newRow = dt.NewRow();
+                newRow["lotnumber"] = newLotNumber;
+                newRow["typename"] = cboTypename.Text;
+
+                int qty;
+                if (!int.TryParse(txtQty.Text, out qty))
+                {
+                    MessageBox.Show("Invalid qty value.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                newRow["qty"] = qty;
+
+                string trackingnumber = txtTrackingnum.Text;
+                if (trackingnumber.Length > 50)
+                {
+                    trackingnumber = trackingnumber.Substring(0, 50);
+                }
+                newRow["trackingnumber"] = trackingnumber;
+
+                newRow["condition"] = cboCondition.Text;
+                newRow["repairable"] = cboRepairable.Text;
+                newRow["receivedDate"] = dateReceived.Checked ? (object)dateReceived.Value : DBNull.Value;
+                //newRow["lastEntered"] = dateReceived.Checked ? (object)dateReceived.Value : DBNull.Value;
+                dt.Rows.Add(newRow);
+
+                iQor_inbound.ClearSelection();
+                iQor_inbound.Rows[dt.Rows.Count - 1].Selected = true;
+
+                using (SqlCommand cmdInsert = new SqlCommand("INSERT INTO iQor_inbound_T (lotnumber, typename, qty, trackingnumber, condition, repairable, receivedDate, lastEntered, lastUpdated) VALUES (@lotnumber, @typename, @qty, @trackingnumber, @condition, @repairable, @receivedDate, @lastEntered, @lastUpdated)", con))
+                {
+                    cmdInsert.CommandType = CommandType.Text;
+                    cmdInsert.Parameters.AddWithValue("@lotnumber", newLotNumber);
+                    cmdInsert.Parameters.AddWithValue("@typename", cboTypename.Text);
+                    cmdInsert.Parameters.AddWithValue("@qty", qty);
+                    cmdInsert.Parameters.AddWithValue("@trackingnumber", trackingnumber);
+                    cmdInsert.Parameters.AddWithValue("@condition", cboCondition.Text);
+                    cmdInsert.Parameters.AddWithValue("@repairable", cboRepairable.Text);
+
+                    DateTime currentDateTime = DateTime.Now;
+                    cmdInsert.Parameters.AddWithValue("@lastEntered", currentDateTime.Date);
+                    cmdInsert.Parameters.AddWithValue("@lastUpdated", currentDateTime);
+
+                    if (dateReceived.Checked)
+                    {
+                        cmdInsert.Parameters.AddWithValue("@receivedDate", dateReceived.Value);
+                    }
+                    else
+                    {
+                        cmdInsert.Parameters.AddWithValue("@receivedDate", DBNull.Value);
+                    }
+
+                    try
+                    {
+                        con.Open();
+                        cmdInsert.ExecuteNonQuery();
+                        con.Close();
+                        LoadData();
+                        ResetFormControls();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+            }
+        }
+        private string GenerateNewLotNumber(string prefix)
+        {
+            string maxLotNumber = null;
+            using (SqlCommand cmdSelectMaxLot = new SqlCommand("SELECT TOP 1 lotnumber FROM iQor_inbound_T WHERE lotnumber LIKE @prefixPattern ORDER BY lotnumber DESC", con))
+            {
+                cmdSelectMaxLot.Parameters.AddWithValue("@prefixPattern", prefix + "%");
+                con.Open();
+                object result = cmdSelectMaxLot.ExecuteScalar();
+                if (result != null)
+                    maxLotNumber = (string)result;
+                con.Close();
+            }
+
+            string newLotNumber = prefix + "0000001";
+            if (maxLotNumber != null)
+            {
+                string numberPart = maxLotNumber.Substring(prefix.Length);
+                int number = int.Parse(numberPart);
+                newLotNumber = prefix + (number + 1).ToString("D7");
+            }
+            return newLotNumber;
+        }
+
+        private void iQor_inbound_SelectionChanged(object sender, EventArgs e)
+        {
+            if (iQor_inbound.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = iQor_inbound.SelectedRows[0];
+
+                if (iQor_inbound.Columns.Count >= 8)
+                {
+                    object idxObject = row.Cells[0]?.Value;
+
+                    if (idxObject != null && idxObject != DBNull.Value)
+                    {
+                        idx = Convert.ToInt32(idxObject);
+                        System.Diagnostics.Debug.WriteLine("idx: " + idx);
+                    }
+                    else
+                    {
+                        idx = 0;
+                        System.Diagnostics.Debug.WriteLine("idx is DBNull or null.");
+                    }
+
+                    txtQty.Text = row.Cells[3]?.Value?.ToString() ?? string.Empty;
+                    System.Diagnostics.Debug.WriteLine("txtQty: " + txtQty.Text);
+
+                    txtTrackingnum.Text = row.Cells[4]?.Value?.ToString() ?? string.Empty;
+                    System.Diagnostics.Debug.WriteLine("txtTrackingnum: " + txtTrackingnum.Text);
+
+                    cboTypename.Text = row.Cells[2]?.Value?.ToString() ?? string.Empty;
+                    System.Diagnostics.Debug.WriteLine("cboTypename: " + cboTypename.Text);
+
+                    cboCondition.Text = row.Cells[5]?.Value?.ToString() ?? string.Empty;
+                    System.Diagnostics.Debug.WriteLine("cboCondition: " + cboCondition.Text);
+
+                    cboRepairable.Text = row.Cells[6]?.Value?.ToString() ?? string.Empty;
+                    System.Diagnostics.Debug.WriteLine("cboRepairable: " + cboRepairable.Text);
+                }
+                else
+                {
+                    MessageBox.Show("Cells count is not sufficient!");
+                }
+            }
+        }
+
+        private void iQor_inbound_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow row = iQor_inbound.Rows[e.RowIndex];
+
+                if (row.Cells.Count >= 43)
+                {
+                    idx = Convert.ToInt32(row.Cells[0].Value);
+                    txtQty.Text = row.Cells[39]?.Value?.ToString() ?? string.Empty;
+                    txtTrackingnum.Text = row.Cells[36]?.Value?.ToString() ?? string.Empty;
+                    cboTypename.Text = row.Cells[14]?.Value?.ToString() ?? string.Empty;
+                    cboCondition.Text = row.Cells[34]?.Value?.ToString() ?? string.Empty;
+                    cboRepairable.Text = row.Cells[35]?.Value?.ToString() ?? string.Empty;
+                }
+                else
+                {
+                    MessageBox.Show("Cells count is not sufficient!");
+                }
+            }
+        }
+
+        private bool IsValid()
+        {
+            if (cboTypename.Text == string.Empty)
+            {
+                MessageBox.Show("typename is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (txtQty.Text == string.Empty)
+            {
+                MessageBox.Show("qty is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (txtTrackingnum.Text == string.Empty)
+            {
+                MessageBox.Show("trackingnumber is required", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private void GetiQor_inbound_Systemrecord()
+        {
+            using (SqlCommand cmd = new SqlCommand("SELECT idx, lotnumber, typename, qty, trackingnumber, condition, repairable, receivedDate, lastEntered FROM iQor_inbound_T WHERE idx=@idx ORDER BY idx DESC", con))
+            {
+                cmd.Parameters.AddWithValue("@idx", idx);
+                con.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+                con.Close();
+
+                iQor_inbound.DataSource = dt;
+            }
+        }
+
+        private void ResetFormControls()
+        {
+            idx = 0;
+            txtQty.Clear();
+            txtTrackingnum.Clear();
+            cboCondition.SelectedIndex = -1;
+            cboRepairable.SelectedIndex = -1;
+            cboTypename.SelectedIndex = -1;
+        }
+
+        private void btnreturnT_Click(object sender, EventArgs e)
+        {
+            string trackingnumber = txtTrackingnum.Text;
+            if (!string.IsNullOrEmpty(trackingnumber))
+            {
+                StringBuilder query = new StringBuilder("SELECT idx, lotnumber, typename, qty, trackingnumber, condition, repairable, receivedDate, lastEntered from iQor_inbound_T WHERE lotnumber IN (SELECT lotnumber FROM iQor_inbound_T WHERE trackingnumber = @trackingnumber)");
+                using (SqlCommand cmd = new SqlCommand(query.ToString(), con))
+                {
+                    cmd.Parameters.AddWithValue("@trackingnumber", trackingnumber);
+                    DataTable dt = new DataTable();
+                    con.Open();
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    dt.Load(sdr);
+                    con.Close();
+                    iQor_inbound.DataSource = dt;
+                }
+            }
+        }
+
+        private void InsertAndReload()
+        {
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            StringBuilder query = new StringBuilder("SELECT idx, lotnumber, typename, qty, trackingnumber, condition, repairable, receivedDate, lastEntered FROM iQor_inbound_T WHERE CAST(lastEntered AS DATE) = CAST(GETDATE() AS DATE) ORDER BY lastEntered DESC");
+
+            using (SqlCommand cmd = new SqlCommand(query.ToString(), con))
+            {
+                DataTable dt = new DataTable();
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                dt.Load(sdr);
+                con.Close();
+                iQor_inbound.DataSource = dt;
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            ResetFormControls();
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            List<int> selectedIdxList = new List<int>();
+            int idxColumnIndex = -1;
+
+            foreach (DataGridViewColumn column in iQor_inbound.Columns)
+            {
+                if (column.Name == "idx")
+                {
+                    idxColumnIndex = column.Index;
+                    break;
+                }
+            }
+
+            if (idxColumnIndex == -1)
+            {
+                MessageBox.Show("Index column not found.");
+                return;
+            }
+
+            foreach (DataGridViewRow selectedRow in iQor_inbound.SelectedRows)
+            {
+                object idxObject = selectedRow.Cells[idxColumnIndex].Value;
+
+                if (idxObject == DBNull.Value || idxObject == null)
+                {
+                    MessageBox.Show("Index is missing.");
+                    continue;
+                }
+
+                int idx = Convert.ToInt32(idxObject);
+                selectedIdxList.Add(idx);
+            }
+
+            if (selectedIdxList.Count == 0)
+            {
+                MessageBox.Show("No rows selected for update.");
+                return;
+            }
+
+            if (selectedIdxList.Count == 0)
+            {
+                MessageBox.Show("No rows selected for update.");
+                return;
+            }
+
+            using (SqlCommand cmdUpdate = new SqlCommand("UPDATE iQor_inbound_T SET typename=@typename, qty=@qty, trackingnumber=@trackingnumber, condition=@condition, repairable=@repairable, receivedDate=@receivedDate, lastUpdated=@lastUpdated WHERE idx=@idx", con))
+            {
+                cmdUpdate.Parameters.AddWithValue("@typename", cboTypename.Text);
+                cmdUpdate.Parameters.AddWithValue("@qty", string.IsNullOrWhiteSpace(txtQty.Text) ? (object)DBNull.Value : txtQty.Text);
+                cmdUpdate.Parameters.AddWithValue("@trackingnumber", string.IsNullOrWhiteSpace(txtTrackingnum.Text) ? (object)DBNull.Value : txtTrackingnum.Text);
+                cmdUpdate.Parameters.AddWithValue("@condition", string.IsNullOrWhiteSpace(cboCondition.Text) ? (object)DBNull.Value : cboCondition.Text);
+                cmdUpdate.Parameters.AddWithValue("@repairable", string.IsNullOrWhiteSpace(cboRepairable.Text) ? (object)DBNull.Value : cboRepairable.Text);
+
+                if (dateReceived.Checked)
+                {
+                    DateTime receivedDate = dateReceived.Value;
+                    cmdUpdate.Parameters.AddWithValue("@receivedDate", receivedDate);
+                }
+                else
+                {
+                    cmdUpdate.Parameters.AddWithValue("@receivedDate", DBNull.Value);
+                }
+                cmdUpdate.Parameters.AddWithValue("@lastUpdated", DateTime.Now);
+
+                cmdUpdate.Parameters.Add("@idx", SqlDbType.Int);
+
+                con.Open();
+
+                foreach (int idx in selectedIdxList)
+                {
+                    cmdUpdate.Parameters["@idx"].Value = idx;
+                    cmdUpdate.ExecuteNonQuery();
+                }
+
+                con.Close();
+            }
+            LoadData();
+            ResetFormControls();
+
+            MessageBox.Show("Record(s) Updated Successfully.");
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            int selectedRowCount = iQor_inbound.SelectedRows.Count;
+            if (selectedRowCount == 0)
+            {
+                MessageBox.Show("Please select rows to delete.");
+                return;
+            }
+
+            string deleteMessage = $"Are you sure you want to delete {selectedRowCount} {(selectedRowCount == 1 ? "record" : "records")}?";
+            if (MessageBox.Show(deleteMessage, "Delete Record", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                foreach (DataGridViewRow selectedRow in iQor_inbound.SelectedRows)
+                {
+                    int idxColumnIndex = selectedRow.Cells["idx"].ColumnIndex;
+                    if (idxColumnIndex == -1)
+                    {
+                        MessageBox.Show("Index column not found.");
+                        continue;
+                    }
+
+                    object idxObject = selectedRow.Cells[idxColumnIndex].Value;
+                    if (idxObject == DBNull.Value || idxObject == null)
+                    {
+                        MessageBox.Show("Index is missing.");
+                        continue;
+                    }
+                    int idx = Convert.ToInt32(idxObject);
+
+                    using (SqlCommand cmdDelete = new SqlCommand("DELETE FROM iQor_inbound_T WHERE idx=@idx", con))
+                    {
+                        cmdDelete.Parameters.AddWithValue("@idx", idx);
+
+                        con.Open();
+                        cmdDelete.ExecuteNonQuery();
+                        con.Close();
+                    }
+                }
+                GetiQor_inbound_Systemrecord();
+                MessageBox.Show($"Selected {selectedRowCount} {(selectedRowCount == 1 ? "record" : "records")} Deleted Successfully.");
+                LoadData();
+                ResetFormControls();
+            }
+        }
+
+        private void btnReceivedD_Click(object sender, EventArgs e)
+        {
+            DateTime fromDate = dateReceived.Value.Date;
+            DateTime toDate = dateToDate.Value.Date;
+
+            StringBuilder query = new StringBuilder("SELECT idx, lotnumber, typename, qty, trackingnumber, condition, repairable, receivedDate, lastEntered FROM iQor_inbound_T WHERE receivedDate BETWEEN @fromDate AND @toDate AND typename NOT IN ('desktop', 'laptop', 'monitor', 'thin client')");
+            using (SqlCommand cmd = new SqlCommand(query.ToString(), con))
+            {
+                cmd.Parameters.AddWithValue("@fromDate", fromDate);
+                cmd.Parameters.AddWithValue("@toDate", toDate);
+
+                DataTable dt = new DataTable();
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                dt.Load(sdr);
+                con.Close();
+                iQor_inbound.DataSource = dt;
+            }
+            ResetFormControls();
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            if (xlApp == null)
+            {
+                MessageBox.Show("Excel is not properly installed!");
+                return;
+            }
+
+            Microsoft.Office.Interop.Excel.Workbook xlWorkbook = xlApp.Workbooks.Add();
+            Microsoft.Office.Interop.Excel.Worksheet xlWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkbook.Worksheets.get_Item(1);
+            int i = 1;
+            int j = 1;
+
+            foreach (DataGridViewColumn column in iQor_inbound.Columns)
+            {
+                xlWorksheet.Cells[1, j] = column.HeaderText;
+                j++;
+            }
+
+            for (j = 0; j < iQor_inbound.Rows.Count; j++)
+            {
+                for (int k = 0; k < iQor_inbound.Columns.Count; k++)
+                {
+                    var cellValue = iQor_inbound.Rows[j].Cells[k].Value;
+                    xlWorksheet.Cells[i + 1, k + 1] = cellValue?.ToString() ?? string.Empty;
+                }
+                i++;
+            }
+
+            Microsoft.Office.Interop.Excel.Range range = xlWorksheet.UsedRange;
+            range.AutoFormat(Microsoft.Office.Interop.Excel.XlRangeAutoFormat.xlRangeAutoFormatTable1);
+
+            xlApp.Visible = true;
+        }
+
+        private void dateReceived_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

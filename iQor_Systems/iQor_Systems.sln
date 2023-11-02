@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34018.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iQor_Systems", "iQor_Systems.csproj", "{69E7670B-9079-4A2F-AD27-D5BA2C799E1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69E7670B-9079-4A2F-AD27-D5BA2C799E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69E7670B-9079-4A2F-AD27-D5BA2C799E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69E7670B-9079-4A2F-AD27-D5BA2C799E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69E7670B-9079-4A2F-AD27-D5BA2C799E1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8EE16421-6A53-484E-91CF-67C98A376505}
+	EndGlobalSection
+EndGlobal

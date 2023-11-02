@@ -1,0 +1,10 @@
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\bin\Release\iQor_inbound_T.exe.config
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\bin\Release\iQor_inbound_T.exe
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\bin\Release\iQor_inbound_T.pdb
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\obj\Release\iQor_inbound_T.csproj.AssemblyReference.cache
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\obj\Release\iQor_inbound_T.Form1.resources
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\obj\Release\iQor_inbound_T.Properties.Resources.resources
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\obj\Release\iQor_inbound_T.csproj.GenerateResource.cache
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\obj\Release\iQor_inbound_T.csproj.CoreCompileInputs.cache
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\obj\Release\iQor_inbound_T.exe
+C:\Users\Joy\Desktop\Mike\iQor_inbound_T\obj\Release\iQor_inbound_T.pdb

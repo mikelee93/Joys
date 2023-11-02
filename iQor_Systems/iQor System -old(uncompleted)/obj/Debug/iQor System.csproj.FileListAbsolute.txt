@@ -1,0 +1,10 @@
+C:\Users\Joy\Desktop\Mike\iQor System\bin\Debug\iQor System.exe.config
+C:\Users\Joy\Desktop\Mike\iQor System\bin\Debug\iQor System.exe
+C:\Users\Joy\Desktop\Mike\iQor System\bin\Debug\iQor System.pdb
+C:\Users\Joy\Desktop\Mike\iQor System\obj\Debug\iQor System.csproj.AssemblyReference.cache
+C:\Users\Joy\Desktop\Mike\iQor System\obj\Debug\iQor_System.Form1.resources
+C:\Users\Joy\Desktop\Mike\iQor System\obj\Debug\iQor_System.Properties.Resources.resources
+C:\Users\Joy\Desktop\Mike\iQor System\obj\Debug\iQor System.csproj.GenerateResource.cache
+C:\Users\Joy\Desktop\Mike\iQor System\obj\Debug\iQor System.csproj.CoreCompileInputs.cache
+C:\Users\Joy\Desktop\Mike\iQor System\obj\Debug\iQor System.exe
+C:\Users\Joy\Desktop\Mike\iQor System\obj\Debug\iQor System.pdb
