@@ -8,3 +8,5 @@ Third, In particular, the KEY RETURN program is the program that I had the most 
 Fourth, MACAddress - The difference between manual and auto versions is that the manual version allows you to scrape the data from the sql server and add the address part directly for each serial number. The auto version helps you set the time by turning on the scheduler and perform it automatically. 
 
 I hope this is useful resources for those who are working as a junior prgrammer like me.
+
+# You can check the images as png files for each folders 
