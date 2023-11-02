@@ -14,8 +14,8 @@ namespace Macaddresss
 {
     public partial class Form1 : Form
     {
-        //private readonly string connectionString = @"Data Source=192.168.1.2;Database=testJoy;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
-        private readonly string connectionString = @"Data Source=192.168.1.2;Database=JoyData;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
+        //private readonly string connectionString = @"Data Source=;Database=;User Id=;Password=;MultipleActiveResultSets=True;";
+        private readonly string connectionString = @"Data Source=;Database=;User Id=;Password=;MultipleActiveResultSets=True;";
 
         public Form1()
         {
