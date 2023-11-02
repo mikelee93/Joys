@@ -29,8 +29,8 @@ namespace iQor_inbound_T_insert
 
         }
 
-        //string connectionString = @"Data Source=192.168.1.2;Database=testJoy;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
-        string connectionString = @"Data Source=192.168.1.2;Database=JoyData;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
+        //string connectionString = @"Data Source=;Database=;User Id=;Password=;MultipleActiveResultSets=True;";
+        string connectionString = @"Data Source=;Database=;User Id=;Password=;MultipleActiveResultSets=True;";
         public int idx;
 
         private void btnInsert_Click(object sender, EventArgs e)
