@@ -9,4 +9,4 @@ Fourth, MACAddress - The difference between manual and auto versions is that the
 
 I hope this is useful resources for those who are working as a junior prgrammer like me.
 
-# You can check the images as png files for each folders 
+# You can check the program images as png files for each folders 
