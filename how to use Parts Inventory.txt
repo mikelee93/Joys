@@ -1,0 +1,15 @@
+Parts Inventory
+
+경우 체크 - 기본적인 insert과정은 select -> SapNum -> Dt/Lt -> Component -> In/out -> qty -> EnteredDate 기준이다.
+
+tab_Purchase이고
+1. cpu일때 = select -> SapNum -> Dt/Lt -> Component -> In/out -> qty -> EnteredDate
+2. ram일때 = select -> SapNum -> Dt/Lt -> ramType -> Ecc -> ramSize -> Speed(cell을 클릭하면 자동으로 component로 값이 입력됨) -> In/out -> qty -> EnteredDate
+3. hdd일때 = select -> SapNum -> SubType -> typeSize(subTpeHddIdx값 클릭하면 diskCapacity값이 자동으로 component입력) -> In/out -> qty -> EnteredDate
+4. odd일때 = select -> SapNum -> SubType -> typeSize(typeSizeOddName 클릭하면 그 값이 자동으로 component입력) -> In/out -> qty -> EnteredDate
+
+tab_Pull이고
+1. cpu일때 = select -> Dt/Lt -> Component -> In/out -> qty -> EnteredDate
+2. ram일때 = select -> Dt/Lt -> ramType -> Ecc -> ramSize -> Speed(cell을 클릭하면 자동으로 component로 값이 입력됨) -> In/out -> qty -> EnteredDate
+3. hdd일때 = select -> SubType -> typeSize(subTpeHddIdx값 클릭하면 diskCapacity값이 자동으로 component입력) -> In/out -> qty -> EnteredDate
+4. odd일때 = select -> SubType -> typeSize(typeSizeOddName 클릭하면 그 값이 자동으로 component입력) -> In/out -> qty -> EnteredDate
