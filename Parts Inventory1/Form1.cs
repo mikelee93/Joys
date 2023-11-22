@@ -39,8 +39,8 @@ namespace Parts_Inventory1
             dateTimePicker1.Value = DateTime.Today;
             textBox2.TextChanged += textBox2_TextChanged;
         }
-        string connectionString = @"Data Source=192.168.1.2;Database=testJoy;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
-        //string connectionString = @"Data Source=192.168.1.2;Database=JoyData;User Id=sa;Password=lease-return;MultipleActiveResultSets=True;";
+        string connectionString = @"Data Source=;Database=;User Id=;Password=;MultipleActiveResultSets=True;";
+        //string connectionString = @"Data Source=;Database=;User Id=;Password=;MultipleActiveResultSets=True;";
 
 
         private void cboSelect_SelectedIndexChanged(object sender, EventArgs e)
